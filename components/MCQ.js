@@ -2,11 +2,16 @@ import React from "react";
 import { useState } from "react";
 import { useEffect } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { NavigationContainer } from "@react-navigation/native";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import ProfileScreen from "../screens/Profile";
+
+const Tab = createBottomTabNavigator();
 
 export default function MCQ() {
   return (
     <View style={styles.container}>
-      {/* {questions && ( */}
       <View style={styles.parent}>
         <View style={styles.top}>
           <Text style={styles.question}>Q. What is the smell of my fart?</Text>
@@ -25,17 +30,54 @@ export default function MCQ() {
             <Text style={styles.option}>Roar</Text>
           </TouchableOpacity>
         </View>
-        <View style={styles.bottom}>
-          <TouchableOpacity style={styles.button}>
-            <Text style={styles.buttonText}>SKIP</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity style={styles.button}>
-            <Text style={styles.buttonText}>NEXT</Text>
-          </TouchableOpacity>
-        </View>
+        <Tab.Navigator
+          tabBarOptions={{
+            activeTintColor: "#e91e63",
+          }}
+        >
+          <Tab.Screen
+            name="Home"
+            // TODO: Fill in Component
+            component={ProfileScreen}
+            options={{
+              tabBarLabel: "Home",
+              tabBarIcon: ({ color, size }) => (
+                <MaterialCommunityIcons name="home" color={color} size={size} />
+              ),
+            }}
+          />
+          <Tab.Screen
+            name="Quizzes"
+            // TODO: Fill in Component
+            component={MCQ}
+            options={{
+              tabBarLabel: "My Quizzes",
+              tabBarIcon: ({ color, size }) => (
+                <MaterialCommunityIcons
+                  name="forum"
+                  color={color}
+                  size={size}
+                />
+              ),
+            }}
+          />
+          <Tab.Screen
+            name="Profile"
+            // TODO: Fill in Component
+            component={ProfileScreen}
+            options={{
+              tabBarLabel: "Profile",
+              tabBarIcon: ({ color, size }) => (
+                <MaterialCommunityIcons
+                  name="account"
+                  color={color}
+                  size={size}
+                />
+              ),
+            }}
+          />
+        </Tab.Navigator>
       </View>
-      {/* )} */}
     </View>
   );
 }
@@ -59,19 +101,6 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     flexDirection: "row",
   },
-  button: {
-    backgroundColor: "#1A759F",
-    padding: 12,
-    paddingHorizontal: 16,
-    borderRadius: 16,
-    alignItems: "center",
-    marginBottom: 30,
-  },
-  buttonText: {
-    fontSize: 18,
-    fontWeight: "600",
-    color: "white",
-  },
   question: {
     fontSize: 28,
   },
@@ -81,32 +110,48 @@ const styles = StyleSheet.create({
     color: "white",
   },
   redButton: {
-    paddingVertical: 12,
+    paddingVertical: 30,
     marginVertical: 6,
     backgroundColor: "#EF4444",
     paddingHorizontal: 12,
     borderRadius: 12,
+    shadowColor: "black",
+    shadowOpacity: 1,
+    shadowRadius: 1,
+    elevation: 5,
   },
   greenButton: {
-    paddingVertical: 12,
+    paddingVertical: 30,
     marginVertical: 6,
     backgroundColor: "#10B981",
     paddingHorizontal: 12,
     borderRadius: 12,
+    shadowColor: "black",
+    shadowOpacity: 1,
+    shadowRadius: 1,
+    elevation: 5,
   },
   blueButton: {
-    paddingVertical: 12,
+    paddingVertical: 30,
     marginVertical: 6,
     backgroundColor: "#3B82F6",
     paddingHorizontal: 12,
     borderRadius: 12,
+    shadowColor: "black",
+    shadowOpacity: 1,
+    shadowRadius: 1,
+    elevation: 5,
   },
   yellowButton: {
-    paddingVertical: 12,
+    paddingVertical: 30,
     marginVertical: 6,
     backgroundColor: "#F59E0B",
     paddingHorizontal: 12,
     borderRadius: 12,
+    shadowColor: "black",
+    shadowOpacity: 1,
+    shadowRadius: 1,
+    elevation: 5,
   },
   parent: {
     height: "100%",
