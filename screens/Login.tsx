@@ -1,5 +1,5 @@
 import * as React from "react"
-import {useContext, useState} from "react";
+import {useContext, useState} from "react"
 
 import {KeyboardAvoidingView, View} from "react-native";
 import {Appbar, Button, Text, TextInput, Title} from 'react-native-paper';
