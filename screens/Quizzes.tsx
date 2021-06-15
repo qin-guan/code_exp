@@ -43,11 +43,12 @@ export default function QuizzesScreen() {
     }
 
     const navigateToCreateQuiz = () => navigation.navigate("CreateQuiz")
+    const navigateToClasses = () => navigation.navigate("ClassroomsNavigator")
 
     return (
         <View style={{flex: 1}}>
             <Appbar.Header>
-                <Appbar.BackAction onPress={navigation.goBack}/>
+                <Appbar.BackAction onPress={navigateToClasses}/>
                 <Appbar.Content title={classroom.name}/>
                 <Appbar.Action icon={"plus"} onPress={navigateToCreateQuiz}/>
             </Appbar.Header>
