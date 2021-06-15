@@ -76,7 +76,7 @@ const SAMPLE_QUIZZES = [
     },
 ];
 
-export default function CreateQuizScreen() {
+export default function CreateQuiz() {
     const [quizzes, setQuizzes] = useState(SAMPLE_QUIZZES);
 
     function renderItem({ item }) {
@@ -122,7 +122,6 @@ export default function CreateQuizScreen() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: "#fff",
         alignItems: "center",
         justifyContent: "center",
         backgroundColor: "#fafafa",

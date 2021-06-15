@@ -14,10 +14,8 @@ export default function LoginScreen() {
     const createUser = async () => {
         try {
             const {id} = await users.add(name)
-            console.log(id)
             authContext.setId(id)
         } catch (e) {
-            console.log(e)
             alert("Could not create new user")
         }
     }
