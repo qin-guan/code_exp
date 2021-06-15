@@ -9,7 +9,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import LoginScreen from "./screens/Login";
 import ProfileScreen from "./screens/Profile";
-import CreateQuizScreen from "./screens/CreateQuizScreen";
+import LeaderboardScreen from "./screens/Leaderboard";
+import CreateQuizScreen from "./screens/CreateQuiz";
 
 import {AuthContext} from "./context/AuthContext";
 
@@ -76,7 +77,7 @@ function App() {
                             },
                         }}
                     >
-                        <Tab.Screen name="Home" component={CreateQuizScreen}/>
+                        <Tab.Screen name="Home" component={LeaderboardScreen}/>
                         <Tab.Screen name="My Quizzes" component={CreateQuizScreen}/>
                         <Tab.Screen name="Profile" component={ProfileScreen}/>
                     </Tab.Navigator>
