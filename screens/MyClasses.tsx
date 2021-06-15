@@ -30,7 +30,8 @@ export default function MyClasses(){
         )
     }
 
-    const navigateToQuizzes = (classroom: ClassroomResponse) => setClassroom(classroom.id)
+    // const navigateToQuizzes = (classroom: ClassroomResponse) => setClassroom(classroom.id)
+    const navigateToQuizzes = (classroom: ClassroomResponse) => navigation.navigate("QuizzesNavigator", {screen: "My Quizzes", params: {classroom}})
 
     return (
         <View style={{flex: 1}}>
