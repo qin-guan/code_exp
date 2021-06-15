@@ -15,7 +15,6 @@ import paper from "./themes/paper";
 import ClassroomsNavigator from "./navigators/ClassroomsNavigator";
 import QuizzesNavigator from "./navigators/QuizzesNavigator";
 import CreateQuizScreen from "./screens/CreateQuiz";
-import InfoSlide from "./components/InfoSlide";
 
 const Stack = createStackNavigator();
 
@@ -35,33 +34,34 @@ function App() {
     await AsyncStorage.setItem("@userId", id);
   };
 
-  return InfoSlide();
-  // <AuthContext.Provider value={{ id, setId }}>
-  //   <PaperProvider theme={paper}>
-  //     <NavigationContainer>
-  //       <Stack.Navigator screenOptions={{ headerShown: false }}>
-  //         {!id ? (
-  //           <Stack.Screen name="Login" component={LoginScreen} />
-  //         ) : (
-  //           <>
-  //             <Stack.Screen
-  //               name={"ClassroomsNavigator"}
-  //               component={ClassroomsNavigator}
-  //             />
-  //             <Stack.Screen
-  //               name={"QuizzesNavigator"}
-  //               component={QuizzesNavigator}
-  //             />
-  //             <Stack.Screen
-  //               name={"CreateQuiz"}
-  //               component={CreateQuizScreen}
-  //             />
-  //           </>
-  //         )}
-  //       </Stack.Navigator>
-  //     </NavigationContainer>
-  //   </PaperProvider>
-  // </AuthContext.Provider>
+  return (
+    <AuthContext.Provider value={{ id, setId }}>
+      <PaperProvider theme={paper}>
+        <NavigationContainer>
+          <Stack.Navigator screenOptions={{ headerShown: false }}>
+            {!id ? (
+              <Stack.Screen name="Login" component={LoginScreen} />
+            ) : (
+              <>
+                <Stack.Screen
+                  name={"ClassroomsNavigator"}
+                  component={ClassroomsNavigator}
+                />
+                <Stack.Screen
+                  name={"QuizzesNavigator"}
+                  component={QuizzesNavigator}
+                />
+                <Stack.Screen
+                  name={"CreateQuiz"}
+                  component={CreateQuizScreen}
+                />
+              </>
+            )}
+          </Stack.Navigator>
+        </NavigationContainer>
+      </PaperProvider>
+    </AuthContext.Provider>
+  );
 }
 
 export default App;
