@@ -4,6 +4,7 @@ import {StyleSheet, TouchableOpacity, View} from "react-native";
 import {Text, Title} from 'react-native-paper'
 
 import colors from "../themes/colors";
+import shadow from "../themes/shadow";
 
 export default function MCQ() {
     const colorIndex = ["red", "green", "blue", "yellow"]
@@ -40,13 +41,7 @@ export default function MCQ() {
                             borderRadius: 15,
                             padding: 30,
                             marginTop: 20,
-                            shadowOpacity: 1,
-                            shadowOffset: {
-                                width: 0,
-                                height: 0
-                            },
-                            shadowRadius: 5,
-                            shadowColor: "#9CA3AF",
+                            ...shadow
                         }}>
                             <Title style={{color: "white"}}>{choice}</Title>
                         </View>

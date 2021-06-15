@@ -5,7 +5,7 @@ import {KeyboardAvoidingView, View} from "react-native";
 import {Appbar, Button, Text, TextInput, Title} from 'react-native-paper';
 
 import users from "../api/users"
-import {AuthContext} from "../App";
+import {AuthContext} from "../context/AuthContext";
 
 export default function LoginScreen() {
     const authContext = useContext(AuthContext)
@@ -13,9 +13,11 @@ export default function LoginScreen() {
 
     const createUser = async () => {
         try {
-            const {id} = await users.createUser(name)
+            const {id} = await users.add(name)
+            console.log(id)
             authContext.setId(id)
         } catch (e) {
+            console.log(e)
             alert("Could not create new user")
         }
     }
