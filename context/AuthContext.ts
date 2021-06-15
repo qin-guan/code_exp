@@ -1,7 +1,16 @@
 import {createContext} from "react";
 
-export const AuthContext = createContext<{ id: string | null, setId: (id: string) => void }>({
+export const AuthContext = createContext<{
+    id: string | null,
+    classroom: string | null,
+    setId: (id: string) => void,
+    setClassroom: (id: string | null) => void,
+}>({
     id: null,
-    setId: () => {}
+    classroom: null,
+    setId: () => {
+    },
+    setClassroom: () => {
+    },
 })
 

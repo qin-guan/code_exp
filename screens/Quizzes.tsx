@@ -7,19 +7,15 @@ import useSWR from "swr";
 import quizzes from "../api/quizzes";
 import Error from "../components/Error";
 import {ClassroomResponse} from "../api/classrooms";
-
-type QuizzesScreenRouteProp = {
-    Quizzes: {
-        classroom: ClassroomResponse
-    };
-}
+import {useContext} from "react";
+import {AuthContext} from "../context/AuthContext";
 
 export default function QuizzesScreen() {
-    const route = useRoute<RouteProp<QuizzesScreenRouteProp, 'Quizzes'>>()
+    const {classroom, setClassroom} = useContext(AuthContext)
     const navigation = useNavigation()
 
-    const {get} = quizzes(route.params.classroom.id)
-    const {data, error} = useSWR(`Classrooms/${route.params.classroom.id}/Quizzes`, get)
+    const {get} = quizzes(classroom ?? "")
+    const {data, error} = useSWR(`Classrooms/${classroom}/Quizzes`, get)
 
     if (error) {
         return <Error/>
@@ -34,15 +30,15 @@ export default function QuizzesScreen() {
     }
 
     return (
-        <SafeAreaView>
+        <View>
             <Appbar.Header>
-                <Appbar.BackAction onPress={() => navigation.goBack()} />
-                <Appbar.Content title={route.params.classroom.name}/>
+                <Appbar.BackAction onPress={() => setClassroom(null)} />
+                <Appbar.Content title={classroom}/>
             </Appbar.Header>
 
             {data.map((q, idx) => {
 
             })}
-        </SafeAreaView>
+        </View>
     )
 }

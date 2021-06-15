@@ -6,21 +6,24 @@ import {createBottomTabNavigator} from "@react-navigation/bottom-tabs";
 import {NavigationContainer} from "@react-navigation/native";
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {Provider as PaperProvider} from "react-native-paper"
+import {Provider as PaperProvider, Text} from "react-native-paper"
 
 import LoginScreen from "./screens/Login";
 import ProfileScreen from "./screens/Profile";
-import CreateQuizScreen from "./screens/CreateQuizScreen";
 
 import {AuthContext} from "./context/AuthContext";
 
 import {MaterialIcons} from "@expo/vector-icons";
+import paper from "./themes/paper";
+import MyClasses from "./screens/MyClasses";
+import QuizzesScreen from "./screens/Quizzes";
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
 function App() {
     const [id, setStateId] = useState<string | null>(null)
+    const [classroom, setClassroom] = useState<string | null>(null)
 
     useEffect(() => {
         const getId = async () => {
@@ -36,35 +39,33 @@ function App() {
     }
 
     return (
-        <AuthContext.Provider value={{id, setId}}>
+        <AuthContext.Provider value={{id, classroom, setId, setClassroom}}>
             <PaperProvider theme={paper}>
                 <NavigationContainer>
-                    {id ? (
+                    {!id ? (
                         <Stack.Navigator screenOptions={{headerShown: false}}>
                             <Stack.Screen name="Login" component={LoginScreen}/>
                         </Stack.Navigator>
                     ) : (
                         <Tab.Navigator
                             screenOptions={({route}) => ({
-                                tabBarIcon: ({focused, color, size}) => {
-                                    let iconName;
-
-                                    // Sets the icon based on which route it is (name of the tab)
-                                    if (route.name === "Home") {
-                                        iconName = "home";
-                                    } else if (route.name === "My Quizzes") {
-                                        iconName = "textsms";
-                                    } else if (route.name === "Profile") {
-                                        iconName = "person";
+                                tabBarIcon: ({color, size}) => {
+                                    switch (route.name) {
+                                        case "My Classes":
+                                        case "My Quizzes":
+                                            return <MaterialIcons
+                                                name={"textsms"}
+                                                size={size}
+                                                color={color}
+                                            />
+                                        case "Leaderboard":
+                                        case "Profile":
+                                            return <MaterialIcons
+                                                name={"person"}
+                                                size={size}
+                                                color={color}
+                                            />
                                     }
-
-                                    return (
-                                        <MaterialIcons
-                                            name={iconName}
-                                            size={size}
-                                            color={color}
-                                        />
-                                    );
                                 },
                             })}
                             tabBarOptions={{
@@ -78,9 +79,17 @@ function App() {
                                 },
                             }}
                         >
-                            <Tab.Screen name="Home" component={CreateQuizScreen}/>
-                            <Tab.Screen name="My Quizzes" component={CreateQuizScreen}/>
-                            <Tab.Screen name="Profile" component={ProfileScreen}/>
+                            {classroom ? (
+                                <>
+                                    <Tab.Screen name="My Quizzes" component={QuizzesScreen}/>
+                                    <Tab.Screen name="Leaderboard" component={ProfileScreen}/>
+                                </>
+                            ) : (
+                                <>
+                                    <Tab.Screen name="My Classes" component={MyClasses}/>
+                                    <Tab.Screen name="Profile" component={ProfileScreen}/>
+                                </>
+                            )}
                         </Tab.Navigator>
                     )}
                 </NavigationContainer>
