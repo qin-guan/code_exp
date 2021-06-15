@@ -11,7 +11,6 @@ import { Provider as PaperProvider } from "react-native-paper";
 import LoginScreen from "./screens/Login";
 import ProfileScreen from "./screens/Profile";
 import LeaderboardScreen from "./screens/Leaderboard";
-import CreateQuizScreen from "./screens/CreateQuiz";
 
 import { AuthContext } from "./context/AuthContext";
 import paper from "./themes/paper";

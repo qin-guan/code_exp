@@ -1,129 +1,36 @@
 import React from "react";
-import { useState, useEffect } from "react";
 import {
     View,
     Text,
-    FlatList,
-    TextInput,
     StyleSheet,
     TouchableOpacity,
-    TouchableWithoutFeedback,
-    Keyboard,
-    Pressable,
 } from "react-native";
-import { MaterialIcons } from "@expo/vector-icons";
-
-const SAMPLE_QUIZZES = [
-    {
-        quizName: "EE2211 Tutorial Quiz",
-        type: "MCQ",
-        questions: {
-            qn1: {
-                qnTitle: "What is the meaning of life?",
-                optionA: "Dog",
-                optionB: "Cat",
-                optionC: "Mouse",
-                optionD: "Bird",
-                ans: ["Dog", "Mouse"],
-            },
-            qn2: {
-                qnTitle: "What is the meaning of death?",
-                optionA: "Dog",
-                optionB: "Cat",
-                optionC: "Mouse",
-                optionD: "Bird",
-                ans: ["Cat"],
-            },
-            qn3: {
-                qnTitle: "What is the meaning of love?",
-                optionA: "Dog",
-                optionB: "Cat",
-                optionC: "Mouse",
-                optionD: "Bird",
-                ans: ["Mouse"],
-            },
-        },
-    },
-    {
-        quizName: "EE2026 Lecture Quiz",
-        type: "MCQ",
-        questions: {
-            qn1: {
-                qnTitle: "What is the meaning of life?",
-                optionA: "Dog",
-                optionB: "Cat",
-                optionC: "Mouse",
-                optionD: "Bird",
-                ans: ["Dog", "Mouse"],
-            },
-            qn2: {
-                qnTitle: "What is the meaning of death?",
-                optionA: "Dog",
-                optionB: "Cat",
-                optionC: "Mouse",
-                optionD: "Bird",
-                ans: ["Cat"],
-            },
-            qn3: {
-                qnTitle: "What is the meaning of love?",
-                optionA: "Dog",
-                optionB: "Cat",
-                optionC: "Mouse",
-                optionD: "Bird",
-                ans: ["Mouse"],
-            },
-        },
-    },
-];
+import {Appbar} from "react-native-paper";
+import {useNavigation} from "@react-navigation/native";
 
 export default function CreateQuiz() {
-    const [quizzes, setQuizzes] = useState(SAMPLE_QUIZZES);
-
-    function renderItem({ item }) {
-        console.log(item);
-        return (
-            <TouchableOpacity style={styles.listItem} onPress={() => {}}>
-                <Text style={styles.listItemText}>{item.quizName}</Text>
-            </TouchableOpacity>
-        );
-    }
-
+    const navigation = useNavigation()
     return (
         <View style={styles.container}>
-            <View style={styles.headerBox}>
-                <View style={styles.headerSubbox}>
-                    <TouchableOpacity>
-                        <MaterialIcons
-                            name="arrow-back-ios"
-                            size={24}
-                            color="black"
-                        />
-                    </TouchableOpacity>
-                    <Text style={styles.headerBoxText}>My Quizzes</Text>
-                    <TouchableOpacity>
-                        <MaterialIcons
-                            name="arrow-forward-ios"
-                            size={24}
-                            color="black"
-                        />
-                    </TouchableOpacity>
-                </View>
-                <Text style={styles.quizTitle}>Enter Quiz Name</Text>
-            </View>
+            <Appbar.Header>
+                <Appbar.BackAction onPress={navigation.goBack}/>
+                <Appbar.Content title={"Create quiz"}/>
+            </Appbar.Header>
+
             <View style={styles.quizRowContainer}>
                 <TouchableOpacity style={styles.quizElementBox}>
-                    <Text>Multiple Choice Questions</Text>
+                    <Text>Multiple Choice Question</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.quizElementBox}>
-                    <Text>Multiple Choice Questions</Text>
+                    <Text>Short Answer Question</Text>
                 </TouchableOpacity>
             </View>
             <View style={styles.quizRowContainer}>
                 <TouchableOpacity style={styles.quizElementBox}>
-                    <Text>Multiple Choice Questions</Text>
+                    <Text>Open-Ended Question</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.quizElementBox}>
-                    <Text>Multiple Choice Questions</Text>
+                    <Text>Info Slide</Text>
                 </TouchableOpacity>
             </View>
         </View>
@@ -133,16 +40,7 @@ export default function CreateQuiz() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        alignItems: "center",
         backgroundColor: "#fafafa",
-    },
-    headerBox: {
-        width: "100%",
-        height: 180,
-        borderBottomLeftRadius: 30,
-        borderBottomRightRadius: 30,
-        backgroundColor: "#93C5FD",
-        marginBottom: 20,
     },
     headerSubbox: {
         flexDirection: "row",
@@ -161,16 +59,18 @@ const styles = StyleSheet.create({
         alignSelf: "center",
     },
     quizRowContainer: {
-        display: "flex",
         flexDirection: "row",
+        alignItems: "center",
+        paddingRight: 15
     },
     quizElementBox: {
-        width: 165,
-        height: 165,
-        margin: 15,
         padding: 15,
+        flex: 1,
+        marginLeft: 15,
+        marginTop: 30,
+        aspectRatio: 1,
         backgroundColor: "#DBEAFE",
-        borderRadius: 30,
+        borderRadius: 15,
         justifyContent: "center",
         alignItems: "center",
         textAlign: "center",
