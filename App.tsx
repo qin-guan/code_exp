@@ -15,6 +15,8 @@ import paper from "./themes/paper";
 import ClassroomsNavigator from "./navigators/ClassroomsNavigator";
 import QuizzesNavigator from "./navigators/QuizzesNavigator";
 import CreateQuizScreen from "./screens/CreateQuiz";
+import OEQ from "./components/OEQ";
+import SAQ from "./components/SAQ";
 
 const Stack = createStackNavigator();
 

@@ -13,7 +13,7 @@ import {useNavigation} from "@react-navigation/native";
 
 export default function MyClasses(){
     const navigation = useNavigation();
-    const {id, setClassroom} = useContext(AuthContext)
+    const {id} = useContext(AuthContext)
 
     const {get} = classrooms(id ?? "")
     const {data: classes, error: classError} = useSWR<ClassroomResponse[]>(`Classrooms/`, get)
