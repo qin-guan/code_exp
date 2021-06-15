@@ -108,13 +108,24 @@ export default function CreateQuiz() {
                         />
                     </TouchableOpacity>
                 </View>
+                <Text style={styles.quizTitle}>Enter Quiz Name</Text>
             </View>
-            <FlatList
-                data={quizzes}
-                renderItem={renderItem}
-                keyExtractor={(item) => String(item.id)}
-                style={styles.list}
-            />
+            <View style={styles.quizRowContainer}>
+                <TouchableOpacity style={styles.quizElementBox}>
+                    <Text>Multiple Choice Questions</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.quizElementBox}>
+                    <Text>Multiple Choice Questions</Text>
+                </TouchableOpacity>
+            </View>
+            <View style={styles.quizRowContainer}>
+                <TouchableOpacity style={styles.quizElementBox}>
+                    <Text>Multiple Choice Questions</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.quizElementBox}>
+                    <Text>Multiple Choice Questions</Text>
+                </TouchableOpacity>
+            </View>
         </View>
     );
 }
@@ -123,7 +134,6 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         alignItems: "center",
-        justifyContent: "center",
         backgroundColor: "#fafafa",
     },
     headerBox: {
@@ -138,26 +148,31 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         alignSelf: "center",
         alignItems: "center",
-        marginTop: 40,
+        marginTop: 50,
     },
     headerBoxText: {
         marginHorizontal: 20,
         fontSize: 24,
         fontWeight: "bold",
     },
-    list: {
-        width: "90%",
+    quizTitle: {
+        fontSize: 24,
+        marginTop: 30,
+        alignSelf: "center",
     },
-    listItem: {
-        fontSize: 20,
+    quizRowContainer: {
+        display: "flex",
+        flexDirection: "row",
+    },
+    quizElementBox: {
+        width: 165,
+        height: 165,
+        margin: 15,
+        padding: 15,
         backgroundColor: "#DBEAFE",
-        height: 150,
-        marginVertical: 15,
-        padding: 20,
-        borderRadius: 15,
-    },
-    listItemText: {
-        fontSize: 36,
-        width: "50%",
+        borderRadius: 30,
+        justifyContent: "center",
+        alignItems: "center",
+        textAlign: "center",
     },
 });
