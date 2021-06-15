@@ -2,20 +2,15 @@ import React from "react";
 import { useState } from "react";
 import { useEffect } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { NavigationContainer } from "@react-navigation/native";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-import ProfileScreen from "../screens/Profile";
-
-const Tab = createBottomTabNavigator();
 
 export default function MCQ() {
   return (
-    <View style={styles.container}>
-      <View style={styles.parent}>
-        <View style={styles.top}>
-          <Text style={styles.question}>Q. What is the smell of my fart?</Text>
-        </View>
+    <View>
+      <View style={styles.top}>
+        <Text style={styles.questionNumber}>Question 1</Text>
+        <Text style={styles.question}>What is the smell of my fart?</Text>
+      </View>
+      <View style={styles.container}>
         <View style={styles.options}>
           <TouchableOpacity style={styles.redButton}>
             <Text style={styles.option}>Woof</Text>
@@ -30,53 +25,6 @@ export default function MCQ() {
             <Text style={styles.option}>Roar</Text>
           </TouchableOpacity>
         </View>
-        <Tab.Navigator
-          tabBarOptions={{
-            activeTintColor: "#e91e63",
-          }}
-        >
-          <Tab.Screen
-            name="Home"
-            // TODO: Fill in Component
-            component={ProfileScreen}
-            options={{
-              tabBarLabel: "Home",
-              tabBarIcon: ({ color, size }) => (
-                <MaterialCommunityIcons name="home" color={color} size={size} />
-              ),
-            }}
-          />
-          <Tab.Screen
-            name="Quizzes"
-            // TODO: Fill in Component
-            component={MCQ}
-            options={{
-              tabBarLabel: "My Quizzes",
-              tabBarIcon: ({ color, size }) => (
-                <MaterialCommunityIcons
-                  name="forum"
-                  color={color}
-                  size={size}
-                />
-              ),
-            }}
-          />
-          <Tab.Screen
-            name="Profile"
-            // TODO: Fill in Component
-            component={ProfileScreen}
-            options={{
-              tabBarLabel: "Profile",
-              tabBarIcon: ({ color, size }) => (
-                <MaterialCommunityIcons
-                  name="account"
-                  color={color}
-                  size={size}
-                />
-              ),
-            }}
-          />
-        </Tab.Navigator>
       </View>
     </View>
   );
@@ -89,7 +37,10 @@ const styles = StyleSheet.create({
     height: "100%",
   },
   top: {
-    marginVertical: 16,
+    backgroundColor: "#93C5FD",
+    borderRadius: 30,
+    height: 180,
+    alignItems: "center",
   },
   options: {
     marginVertical: 16,
@@ -101,8 +52,16 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     flexDirection: "row",
   },
+  questionNumber: {
+    fontSize: 20,
+    paddingTop: 30,
+  },
   question: {
     fontSize: 28,
+    textAlign: "center",
+    marginTop: 20,
+    marginBottom: 10,
+    marginHorizontal: 10,
   },
   option: {
     fontSize: 18,
@@ -152,8 +111,5 @@ const styles = StyleSheet.create({
     shadowOpacity: 1,
     shadowRadius: 1,
     elevation: 5,
-  },
-  parent: {
-    height: "100%",
   },
 });
