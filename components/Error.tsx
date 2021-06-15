@@ -5,10 +5,11 @@ import {useContext} from "react";
 import {AuthContext} from "../context/AuthContext";
 
 export default function Error(){
-    const {setId} = useContext(AuthContext)
+    const {setId, setClassroom} = useContext(AuthContext)
 
     const resetStore = () => {
         setId("")
+        setClassroom(null)
     }
 
     return (

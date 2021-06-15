@@ -33,12 +33,12 @@ export default function MyClasses(){
     const navigateToQuizzes = (classroom: ClassroomResponse) => setClassroom(classroom.id)
 
     return (
-        <View>
+        <View style={{flex: 1}}>
             <Appbar.Header>
                 <Appbar.Content title={"My classes"}/>
             </Appbar.Header>
 
-                <FlatList data={classes} renderItem={({item: c}) => (
+                <FlatList style={{flex: 1}} data={classes} renderItem={({item: c}) => (
                     <View style={{marginTop: 30, padding: 15}}>
                         <TouchableOpacity onPress={() => navigateToQuizzes(c)}>
                             <View
