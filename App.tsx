@@ -5,7 +5,6 @@ import { NavigationContainer } from "@react-navigation/native";
 import LoginScreen from "./screens/Login";
 import { useState } from "react";
 import ProfileScreen from "./screens/Profile";
-import MCQ from "./components/MCQ";
 
 const Stack = createStackNavigator();
 
@@ -18,7 +17,7 @@ function App() {
         {!authenticated ? (
           <Stack.Screen name="Login" component={LoginScreen} />
         ) : (
-          <Stack.Screen name="MCQ" component={MCQ} />
+          <Stack.Screen name="Profile" component={ProfileScreen} />
         )}
       </Stack.Navigator>
     </NavigationContainer>
