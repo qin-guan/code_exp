@@ -1,13 +1,93 @@
 import React from "react";
+import { useState, useEffect } from "react";
 import {
     View,
     Text,
+    FlatList,
+    TextInput,
     StyleSheet,
     TouchableOpacity,
+    TouchableWithoutFeedback,
+    Keyboard,
+    Pressable,
 } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 
-export default function CreateQuizScreen() {
+const SAMPLE_QUIZZES = [
+    {
+        quizName: "EE2211 Tutorial Quiz",
+        type: "MCQ",
+        questions: {
+            qn1: {
+                qnTitle: "What is the meaning of life?",
+                optionA: "Dog",
+                optionB: "Cat",
+                optionC: "Mouse",
+                optionD: "Bird",
+                ans: ["Dog", "Mouse"],
+            },
+            qn2: {
+                qnTitle: "What is the meaning of death?",
+                optionA: "Dog",
+                optionB: "Cat",
+                optionC: "Mouse",
+                optionD: "Bird",
+                ans: ["Cat"],
+            },
+            qn3: {
+                qnTitle: "What is the meaning of love?",
+                optionA: "Dog",
+                optionB: "Cat",
+                optionC: "Mouse",
+                optionD: "Bird",
+                ans: ["Mouse"],
+            },
+        },
+    },
+    {
+        quizName: "EE2026 Lecture Quiz",
+        type: "MCQ",
+        questions: {
+            qn1: {
+                qnTitle: "What is the meaning of life?",
+                optionA: "Dog",
+                optionB: "Cat",
+                optionC: "Mouse",
+                optionD: "Bird",
+                ans: ["Dog", "Mouse"],
+            },
+            qn2: {
+                qnTitle: "What is the meaning of death?",
+                optionA: "Dog",
+                optionB: "Cat",
+                optionC: "Mouse",
+                optionD: "Bird",
+                ans: ["Cat"],
+            },
+            qn3: {
+                qnTitle: "What is the meaning of love?",
+                optionA: "Dog",
+                optionB: "Cat",
+                optionC: "Mouse",
+                optionD: "Bird",
+                ans: ["Mouse"],
+            },
+        },
+    },
+];
+
+export default function CreateQuiz() {
+    const [quizzes, setQuizzes] = useState(SAMPLE_QUIZZES);
+
+    function renderItem({ item }) {
+        console.log(item);
+        return (
+            <TouchableOpacity style={styles.listItem} onPress={() => {}}>
+                <Text style={styles.listItemText}>{item.quizName}</Text>
+            </TouchableOpacity>
+        );
+    }
+
     return (
         <View style={styles.container}>
             <View style={styles.headerBox}>
