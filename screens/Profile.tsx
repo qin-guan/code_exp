@@ -1,6 +1,7 @@
 import * as React from "react";
 import {View} from "react-native"
 import {Appbar} from "react-native-paper";
+import MCQ from "../components/MCQ";
 
 export default function ProfileScreen() {
     return (

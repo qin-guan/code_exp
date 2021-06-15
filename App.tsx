@@ -1,9 +1,12 @@
 import * as React from 'react';
+import {createContext, useEffect, useState} from "react";
+
 import {createStackNavigator} from "@react-navigation/stack";
 import {NavigationContainer} from "@react-navigation/native";
 
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 import LoginScreen from "./screens/Login";
-import {createContext, Dispatch, SetStateAction, useState} from "react";
 import ProfileScreen from "./screens/Profile";
 
 const Stack = createStackNavigator();
@@ -15,7 +18,18 @@ export const AuthContext = createContext<{ id: string | null, setId: (id: string
 function App() {
     const [id, setStateId] = useState<string | null>(null)
 
-    const setId = (id: string) => setStateId(id)
+    useEffect(() => {
+        const getId = async () => {
+            const id = await AsyncStorage.getItem("@userId")
+            if (id) setStateId(id)
+        }
+        getId()
+    }, [])
+
+    const setId = async (id: string) => {
+        setStateId(id)
+        await AsyncStorage.setItem("@userId", id)
+    }
 
     return (
         <AuthContext.Provider value={{id, setId}}>
