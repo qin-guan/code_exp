@@ -1,17 +1,22 @@
 import * as React from 'react';
-import {createContext, createRef, MutableRefObject, useRef, useEffect, useState} from "react";
+import {useEffect, useState} from 'react';
 
 import {createStackNavigator} from "@react-navigation/stack";
 import {NavigationContainer} from "@react-navigation/native";
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+import {Provider as PaperProvider} from "react-native-paper"
+
 import LoginScreen from "./screens/Login";
 import ProfileScreen from "./screens/Profile";
 import {AuthContext} from "./context/AuthContext";
+import QuizzesScreen from "./screens/Quizzes";
+import paper from "./themes/paper";
 
 const Stack = createStackNavigator();
-function App() {
+
+export default function App() {
     const [id, setStateId] = useState<string | null>(null)
 
     useEffect(() => {
@@ -29,17 +34,20 @@ function App() {
 
     return (
         <AuthContext.Provider value={{id, setId}}>
-            <NavigationContainer>
-                <Stack.Navigator screenOptions={{headerShown: false}}>
-                    {!id ? (
-                        <Stack.Screen name="Login" component={LoginScreen}/>
-                    ) : (
-                        <Stack.Screen name="Profile" component={ProfileScreen}/>
-                    )}
-                </Stack.Navigator>
-            </NavigationContainer>
+            <PaperProvider theme={paper}>
+                <NavigationContainer>
+                    <Stack.Navigator screenOptions={{headerShown: false}}>
+                        {!id ? (
+                            <Stack.Screen name="Login" component={LoginScreen}/>
+                        ) : (
+                            <>
+                                <Stack.Screen name="Profile" component={ProfileScreen}/>
+                                <Stack.Screen name="Quizzes" component={QuizzesScreen}/>
+                            </>
+                        )}
+                    </Stack.Navigator>
+                </NavigationContainer>
+            </PaperProvider>
         </AuthContext.Provider>
     );
 }
-
-export default App;
