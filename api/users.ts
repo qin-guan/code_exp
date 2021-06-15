@@ -1,14 +1,20 @@
 import {apiClient} from "./base";
 
-export interface CreateUserResponse {
+export interface UserResponse {
     name: string;
+    points: number;
     id: string;
 }
 
-export const createUser = async (name: string) => {
-    return await apiClient.post("Users", {json: {name}}).json<CreateUserResponse>()
+export const add = async (name: string) => {
+    return await apiClient.post("Users", {json: {name}}).json<UserResponse>()
+}
+
+export const find = async (id: string) => {
+    return await apiClient.get(`Users/${id}`).json<UserResponse>();
 }
 
 export default {
-    createUser
+    find,
+    add
 }
