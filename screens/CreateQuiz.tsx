@@ -1,45 +1,167 @@
-import React, {useState} from "react";
-import {Keyboard, StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback, View,} from "react-native";
-import {Appbar, TextInput} from "react-native-paper";
-import {useNavigation} from "@react-navigation/native";
+import React, {useRef, useState} from "react";
+import {
+    FlatList,
+    Keyboard,
+    KeyboardAvoidingView,
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+    TouchableWithoutFeedback,
+    View,
+} from "react-native";
+import {RouteProp, useNavigation, useRoute} from "@react-navigation/native";
 import Header from "../components/Header";
+import shadow from "../themes/shadow";
+import quizzes from "../api/quizzes";
+import {QuestionResponse} from "../api/questions";
+import {ClassroomResponse} from "../api/classrooms";
+import MCQ from "../components/MCQ";
+import questionsApi from "../api/questions"
+
+const QUESTION_TYPES = ["Multiple-Choice Question", "Short Answer Question", "Open ended Question", "Info slide"]
+
+type CreateQuizScreenRouteParams = {
+    CreateQuiz: {
+        classroom: ClassroomResponse
+    }
+}
+
+function renderQuizComponent(questions: Partial<QuestionResponse>[], currentQuestion: number, setQuestions: (qns: Partial<QuestionResponse>[]) => void) {
+    switch (questions[currentQuestion].questionType) {
+        case 0:
+        case 1:
+        case 2:
+        case 3:
+            return (
+                <View>
+                    <MCQ editable questions={questions[currentQuestion].mcqQuestionChoices} setOptions={options => {
+                        const qns = [...questions]
+                        qns[currentQuestion].mcqQuestionChoices = options
+                        setQuestions(qns)
+                    }}/>
+                </View>
+            )
+    }
+}
 
 export default function CreateQuiz() {
+    const route = useRoute<RouteProp<CreateQuizScreenRouteParams, 'CreateQuiz'>>()
     const navigation = useNavigation()
-    const [questions, setQuestions] = useState([])
+
+    const {classroom} = route.params
+    const {create} = quizzes(classroom.id)
+
+    const quizId = useRef("")
+    const questionTypeRef = useRef(0)
+
+    const {create: createQuestionsApi} = questionsApi(classroom.id, quizId.current)
+    const [questions, setQuestions] = useState<Partial<QuestionResponse>[]>([])
+    const [currentQuestion, setCurrentQuestion] = useState(0)
+
+    const [quizName, setQuizName] = useState("")
+
+    const initQuiz = async (questionType: number) => {
+        if (quizName.length === 0) return;
+        const {id} = await create(quizName);
+        quizId.current = id
+        questionTypeRef.current = questionType;
+
+        setQuestions(q => [...q, {
+            questionType,
+            title: "",
+            mcqQuestionChoices: [
+                {
+                    "choice": "choice 1",
+                    "isAnswer": false
+                },
+                {
+                    "choice": "choice 1",
+                    "isAnswer": false
+                },
+                {
+                    "choice": "choice 1",
+                    "isAnswer": false
+                },
+                {
+                    "choice": "choice 1",
+                    "isAnswer": false
+                },
+            ]
+        }])
+    }
+
+    const newQuestion = () => {
+        setQuestions(q => [...q, {
+            questionType: questionTypeRef.current,
+            mcqQuestionChoices: [
+                {
+                    "choice": "choice 1",
+                    "isAnswer": false
+                },
+                {
+                    "choice": "choice 1",
+                    "isAnswer": false
+                },
+                {
+                    "choice": "choice 1",
+                    "isAnswer": false
+                },
+                {
+                    "choice": "choice 1",
+                    "isAnswer": false
+                },
+            ],
+            title: ""
+        }])
+        setCurrentQuestion(questions.length - 1)
+    }
+
+    const createQuestions = async () => {
+        try {
+            await createQuestionsApi(questions)
+            navigation.goBack()
+        } catch (e) {
+            alert("Could not create questions")
+        }
+    }
 
     return (
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-            <View style={styles.container}>
-                {/*<Header backButton title={"Create Quiz"}/>*/}
+        <KeyboardAvoidingView behavior={"padding"} style={{flex: 1}}>
+            <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+                <View style={styles.container}>
+                    <Header
+                        textInput
+                        backButton={questions.length === 0}
+                        questionNumber={questions.length === 0 ? undefined : currentQuestion}
+                        placeholder={questions.length === 0 ? "Enter Quiz Name" : "Insert your question here"}
+                        value={questions.length === 0 ? quizName : questions[currentQuestion].title}
+                        title={questions.length === 0 ? "Create Quiz" : quizName}
+                        onChangeText={questions.length === 0 ? setQuizName : (text) => {
+                            const clone = [...questions]
+                            clone[currentQuestion].title = text
+                            setQuestions(clone)
+                        }}
+                        onLeft={() => setCurrentQuestion(c => c - 1)}
+                        onRight={() => {
+                            if (currentQuestion < questions.length - 1) setCurrentQuestion(c => c + 1)
+                        }}
+                        onNewQuestion={newQuestion}
+                        onCreate={questions.length !== 0 ? createQuestions : undefined}
+                    />
 
-                <TextInput placeholder={"Quiz name"}/>
-
-                {questions.length === 0 ? (
-                    <>
+                    {questions.length === 0 ? (
                         <View style={styles.quizRowContainer}>
-                            <TouchableOpacity style={styles.quizElementBox}>
-                                <Text>Multiple Choice Question</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity style={styles.quizElementBox}>
-                                <Text>Short Answer Question</Text>
-                            </TouchableOpacity>
+                            <FlatList numColumns={2} data={QUESTION_TYPES} renderItem={({item, index}) => (
+                                <TouchableOpacity style={styles.quizElementBox} onPress={() => initQuiz(index)}>
+                                    <Text>{item}</Text>
+                                </TouchableOpacity>
+                            )}/>
                         </View>
-                        <View style={styles.quizRowContainer}>
-                            <TouchableOpacity style={styles.quizElementBox}>
-                                <Text>Open-Ended Question</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity style={styles.quizElementBox}>
-                                <Text>Info Slide</Text>
-                            </TouchableOpacity>
-                        </View>
-                    </>
-                ) : (
-                    <View/>
-                )}
+                    ) : renderQuizComponent(questions, currentQuestion, setQuestions)}
 
-            </View>
-        </TouchableWithoutFeedback>
+                </View>
+            </TouchableWithoutFeedback>
+        </KeyboardAvoidingView>
     );
 }
 
@@ -66,8 +188,8 @@ const styles = StyleSheet.create({
     },
     quizRowContainer: {
         flexDirection: "row",
-        alignItems: "center",
-        paddingRight: 15
+        paddingRight: 15,
+        flex: 1
     },
     quizElementBox: {
         padding: 15,
@@ -80,5 +202,6 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
         textAlign: "center",
+        ...shadow
     },
 });

@@ -42,7 +42,9 @@ export default function QuizzesScreen() {
         )
     }
 
-    const navigateToCreateQuiz = () => navigation.navigate("CreateQuiz")
+    const navigateToCreateQuiz = () => {
+        navigation.navigate("CreateQuiz", {classroom})
+    }
     const navigateToClasses = () => navigation.navigate("ClassroomsNavigator")
 
     return (
