@@ -13,10 +13,9 @@ import {RouteProp, useNavigation, useRoute} from "@react-navigation/native";
 import Header from "../components/Header";
 import shadow from "../themes/shadow";
 import quizzes from "../api/quizzes";
-import {QuestionResponse} from "../api/questions";
+import questionsApi, {QuestionResponse} from "../api/questions";
 import {ClassroomResponse} from "../api/classrooms";
 import MCQ from "../components/MCQ";
-import questionsApi from "../api/questions"
 
 const QUESTION_TYPES = ["Multiple-Choice Question", "Short Answer Question", "Open ended Question", "Info slide"]
 

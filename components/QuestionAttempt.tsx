@@ -10,7 +10,7 @@ export interface QuestionAttemptProps {
     questionType: number,
     quizId: string,
     classroomId: string
-    onComplete: () => void
+    onComplete: (choice: {id?: string}[]) => void
 }
 
 export default function QuestionAttempt(props: QuestionAttemptProps) {

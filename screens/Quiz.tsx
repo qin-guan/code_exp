@@ -1,14 +1,15 @@
-import React, {useState} from "react";
+import React, {useContext, useState} from "react";
 import {SafeAreaView, Text, View} from "react-native";
 import {RouteProp, useNavigation, useRoute} from "@react-navigation/native";
 import {ClassroomResponse} from "../api/classrooms";
-import {QuizResponse} from "../api/quizzes";
+import quizzes, {QuizResponse} from "../api/quizzes";
 import Header from "../components/Header";
 import useSWR from '@nandorojo/swr-react-native';
 import questionsApi from "../api/questions"
 import Error from "../components/Error";
 import {ActivityIndicator, Appbar, Button, Title} from "react-native-paper";
 import QuestionAttempt from "../components/QuestionAttempt";
+import {AuthContext} from "../context/AuthContext";
 
 type QuizScreenRouteProps = {
     Quiz: {
@@ -19,14 +20,17 @@ type QuizScreenRouteProps = {
 
 export default function QuizScreen() {
     const navigation = useNavigation();
+    const {id} = useContext(AuthContext)
     const route = useRoute<RouteProp<QuizScreenRouteProps, 'Quiz'>>()
 
     const {classroom, quiz} = route.params;
     const {get} = questionsApi(classroom.id, quiz.id)
+    const {attempt} = quizzes(classroom.id)
 
     const {data: questions, error} = useSWR(`Classroom/${classroom.id}/Quizzes/${quiz.id}/Questions`, get)
     const [currentQuestion, setCurrentQuestion] = useState(0)
-    const [completedQuiz, setCompletedQuiz] = useState(false)
+    const [answerList, setAnswerList] = useState<{choiceId: string, questionId: string}[]>([])
+    const [completedQuiz, setCompletedQuiz] = useState<number | null>(null)
 
     if (error) return <Error/>
     if (!questions) {
@@ -50,12 +54,21 @@ export default function QuizScreen() {
         )
     }
 
+    const completeQuiz = async () => {
+        try {
+            const points = await attempt(id ?? "", quiz.id, answerList);
+            setCompletedQuiz(points)
+        } catch (e) {
+            alert("Could not submit quiz attempt")
+        }
+    }
+
     return (
         <View style={{flex: 1}}>
             <Header title={`Question ${currentQuestion + 1}: ${questions[currentQuestion].title}`}/>
-            {completedQuiz ? (
+            {completedQuiz !== null ? (
                 <View style={{alignItems: "center", justifyContent: "center", flex: 1}}>
-                    <Title>Completed Quiz!</Title>
+                    <Title>Completed Quiz! You earned {completedQuiz} points!</Title>
                     <Button onPress={navigation.goBack}>Back to quizzes screen</Button>
                 </View>
             ) : <QuestionAttempt
@@ -63,9 +76,11 @@ export default function QuizScreen() {
                 questionId={questions[currentQuestion].id}
                 questionType={questions[currentQuestion].questionType}
                 classroomId={classroom.id}
-                onComplete={() => {
+                onComplete={([{id}]) => {
+                    setAnswerList([...answerList, {choiceId: id ?? "", questionId: questions[currentQuestion].id}])
+
                     if (currentQuestion < questions.length - 1) setCurrentQuestion(currentQuestion + 1)
-                    else setCompletedQuiz(true)
+                    else completeQuiz()
                 }}
             />}
         </View>

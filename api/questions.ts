@@ -1,7 +1,7 @@
 import {apiClient} from "./base";
 
 export interface QuestionResponse {
-    mcqChoices: {choice: string, isAnswer: boolean}[];
+    mcqChoices: {choice: string, isAnswer: boolean, id?: string}[];
     id: string;
     title: string;
     questionType: number,
@@ -15,6 +15,7 @@ export interface QuestionResponse {
     mcqQuestionChoices: {
         choice: string,
         isAnswer: boolean
+        id?: string,
     }[]
 }
 

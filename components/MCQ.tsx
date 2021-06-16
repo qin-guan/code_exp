@@ -1,15 +1,15 @@
 import React from "react";
 
-import {Alert, StyleSheet, TouchableOpacity, View} from "react-native";
-import {Title, Text} from 'react-native-paper'
+import {Alert, TouchableOpacity, View} from "react-native";
+import {Title} from 'react-native-paper'
 
 import colors from "../themes/colors";
 import shadow from "../themes/shadow";
 
 export interface MCQProps {
     editable: boolean;
-    questions: { choice: string; isAnswer: boolean }[]
-    setOptions: (o: { choice: string; isAnswer: boolean }[]) => void
+    questions: { choice: string; isAnswer: boolean, id?: string }[]
+    setOptions: (o: { choice: string; isAnswer: boolean, id?: string }[]) => void
 }
 
 export default function MCQ(props: Partial<MCQProps>) {
@@ -21,7 +21,7 @@ export default function MCQ(props: Partial<MCQProps>) {
 
     return (
         <View style={{padding: 15}}>
-            {questions.map(({choice, isAnswer}, idx) => (
+            {questions.map(({choice, isAnswer, id}, idx) => (
                 <TouchableOpacity onPress={() => {
                     if (editable) {
                         Alert.prompt("Edit this field", undefined, (text) => {
@@ -30,7 +30,8 @@ export default function MCQ(props: Partial<MCQProps>) {
                             setOptions(c);
                         }, undefined, choice)
                     } else {
-                        setOptions([])
+                        // @ts-ignore
+                        setOptions([{id}])
                     }
                 }}>
                     <View style={{

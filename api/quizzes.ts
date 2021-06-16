@@ -11,7 +11,10 @@ const quizzes = (id: string) => ({
         return await apiClient.get(`Classrooms/${id}/Quizzes`).json<QuizResponse[]>();
     },
     create: async (name: string) => {
-        return await apiClient.post(`Classrooms/${id}/Quizzes`, {json: {name, requestorId: id}}).json<QuizResponse>();
+        return await apiClient.post(`Classrooms/${id}/Quizzes`, {json: {name}}).json<QuizResponse>();
+    },
+    attempt: async (requestorId: string, quizId: string, questionAttempts: {questionId: string, choiceId: string}[]) => {
+        return await apiClient.post(`Classrooms/${id}/Quizzes/${quizId}/Attempt`, {json: {requestorId, questionAttempts}}).json<number>()
     }
 });
 
