@@ -15,6 +15,12 @@ export const getLeaderboard = async () => {
 export const teams = (userId: string) => ({
     join: async (code: string) => {
         return apiClient.get(`Teams/${code}`, {searchParams: {requestorId: userId}}).json<TeamResponse>()
+    },
+    create: async (name: string) => {
+        return apiClient.post(`Teams`, {json: {name, requestorId: userId}}).json<TeamResponse>();
+    },
+    find: async (id: string) => {
+        return apiClient.get(`Teams/${id}`).json<TeamResponse>()
     }
 })
 

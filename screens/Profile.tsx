@@ -1,7 +1,7 @@
 import * as React from "react";
 import {useContext, useState} from "react";
 
-import {Keyboard, SafeAreaView, StyleSheet, TouchableWithoutFeedback, View,} from "react-native";
+import {Alert, Keyboard, SafeAreaView, StyleSheet, TouchableWithoutFeedback, View,} from "react-native";
 import {ActivityIndicator, Avatar, Button, Text, TextInput, Title,} from "react-native-paper";
 import useSWR from '@nandorojo/swr-react-native';
 import colors from "../themes/colors";
@@ -9,12 +9,12 @@ import shadow from "../themes/shadow";
 import {find, UserResponse} from "../api/users";
 import {AuthContext} from "../context/AuthContext";
 import Error from "../components/Error";
-import {teams} from "../api/teams";
+import {TeamResponse, teams} from "../api/teams";
 
 export default function ProfileScreen() {
     const {id} = useContext(AuthContext);
 
-    const {join} = teams(id ?? "");
+    const {join, create, find: findTeam} = teams(id ?? "");
     const [code, setCode] = useState("");
     const [visible, setVisible] = useState(false);
 
@@ -22,11 +22,15 @@ export default function ProfileScreen() {
         find(id ?? "")
     );
 
-    if (error) {
+    const {data: team, error: teamError} = useSWR<TeamResponse>(`Teams/${data?.teamId}`, data?.teamId ? () => {
+        return findTeam(data?.teamId)
+    } : null)
+
+    if (error || teamError) {
         return <Error/>;
     }
 
-    if (!data) {
+    if (!data || !team) {
         return (
             <SafeAreaView>
                 <ActivityIndicator animating/>
@@ -41,6 +45,14 @@ export default function ProfileScreen() {
             alert("Could not join team");
         }
     };
+
+    const createTeam = async (name: string) => {
+        try {
+            await create(name)
+        } catch {
+            alert("Could not create team")
+        }
+    }
 
     return (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
@@ -85,14 +97,14 @@ export default function ProfileScreen() {
                                 marginTop: 10,
                             }}
                         >
-                            <Text style={{fontSize: 18}}>Deja Vu</Text>
+                            <Text style={{fontSize: 18}}>{team?.name}</Text>
                             <Text style={{fontSize: 18, paddingRight: 6}}>
-                                {data.points}
+                                {team.points}
                             </Text>
                         </View>
                     </View>
 
-                    {!data.teamId && visible ? (
+                    {!data.teamId && (visible ? (
                         <>
                             <TextInput
                                 value={code}
@@ -109,14 +121,30 @@ export default function ProfileScreen() {
                             </Button>
                         </>
                     ) : (
-                        <Button
-                            mode={"outlined"}
-                            onPress={() => setVisible(true)}
-                            style={{margin: 30}}
-                        >
-                            Join a team
-                        </Button>
-                    )}
+                        <>
+                            <Button
+                                mode={"outlined"}
+                                onPress={() => setVisible(true)}
+                                style={{margin: 30}}
+                            >
+                                Join a team
+                            </Button>
+                            <Button
+                                mode={"outlined"}
+                                onPress={() => {
+                                    Alert.prompt("Team name", undefined, (text) => {
+                                        if (text) {
+                                            createTeam(text)
+                                        }
+                                    })
+                                }}
+                                style={{margin: 30}}
+                            >
+                                Create a team
+                            </Button>
+
+                        </>
+                    ))}
                 </View>
             </SafeAreaView>
         </TouchableWithoutFeedback>
