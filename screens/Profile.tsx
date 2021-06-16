@@ -79,19 +79,6 @@ export default function ProfileScreen() {
 
           <View style={styles.leaderboard}>
             <View
-              style={{ flexDirection: "row", justifyContent: "space-between" }}
-            >
-              <Title>View Leaderboards</Title>
-              <TouchableOpacity>
-                <Entypo
-                  style={{ marginTop: 5 }}
-                  name="chevron-right"
-                  size={24}
-                  color="black"
-                />
-              </TouchableOpacity>
-            </View>
-            <View
               style={{
                 flexDirection: "row",
                 justifyContent: "space-between",
