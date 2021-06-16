@@ -57,7 +57,7 @@ export default function QuizzesScreen() {
             </Appbar.Header>
 
             <FlatList style={{flex: 1}} data={data} renderItem={({item, index}) => (
-                <View>
+                <View key={index.toString()}>
                     <TouchableOpacity onPress={() => navigateToQuiz(item)}>
                         <View style={{
                             backgroundColor: colors.headerGreen,

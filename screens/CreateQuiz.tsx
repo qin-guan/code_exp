@@ -159,7 +159,7 @@ export default function CreateQuiz() {
                     {questions.length === 0 ? (
                         <View style={styles.quizRowContainer}>
                             <FlatList numColumns={2} data={QUESTION_TYPES} renderItem={({item, index}) => (
-                                <TouchableOpacity style={styles.quizElementBox} onPress={() => initQuiz(index)}>
+                                <TouchableOpacity style={styles.quizElementBox} onPress={() => initQuiz(index)} key={index.toString()}>
                                     <Text>{item}</Text>
                                 </TouchableOpacity>
                             )}/>
