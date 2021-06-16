@@ -60,7 +60,10 @@ export default function CreateQuiz() {
     const [quizName, setQuizName] = useState("")
 
     const initQuiz = async (questionType: number) => {
-        if (quizName.length === 0) return;
+        if (quizName.length === 0) {
+            alert("Please set a quiz name first")
+            return;
+        }
         const {id} = await create(quizName);
         quizId.current = id
         questionTypeRef.current = questionType;
@@ -158,7 +161,7 @@ export default function CreateQuiz() {
 
                     {questions.length === 0 ? (
                         <View style={styles.quizRowContainer}>
-                            <FlatList numColumns={2} data={QUESTION_TYPES} renderItem={({item, index}) => (
+                            <FlatList keyExtractor={(_, i) => i.toString()} numColumns={2} data={QUESTION_TYPES} renderItem={({item, index}) => (
                                 <TouchableOpacity style={styles.quizElementBox} onPress={() => initQuiz(index)} key={index.toString()}>
                                     <Text>{item}</Text>
                                 </TouchableOpacity>

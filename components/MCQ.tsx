@@ -22,7 +22,7 @@ export default function MCQ(props: Partial<MCQProps>) {
     return (
         <View style={{padding: 15}}>
             {questions.map(({choice, isAnswer, id}, idx) => (
-                <TouchableOpacity onPress={() => {
+                <TouchableOpacity key={idx.toString()} onPress={() => {
                     if (editable) {
                         Alert.prompt("Edit this field", undefined, (text) => {
                             const c = [...questions]
