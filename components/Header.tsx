@@ -44,7 +44,7 @@ export default function Header(props: Partial<HeaderProps>) {
     return (
         <View style={{backgroundColor: colors.headerBlue}}>
             <SafeAreaView>
-                <View style={{padding: 10, alignItems: 'center', justifyContent: "center"}}>
+                <View style={{padding: 10, marginTop: 30, alignItems: 'center', justifyContent: "center"}}>
                     {backButton &&
                     <Appbar.BackAction style={{padding: 0, margin: 0, position: 'absolute', alignSelf: 'flex-start'}}
                                        onPress={() => navigation.goBack()}/>}
