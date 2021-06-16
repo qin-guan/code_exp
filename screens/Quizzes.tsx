@@ -1,12 +1,12 @@
 import * as React from "react"
 import {useContext} from "react"
-import {FlatList, SafeAreaView, TouchableOpacity, View, Text} from "react-native";
+import {FlatList, SafeAreaView, TouchableOpacity, View} from "react-native";
 import {ActivityIndicator, Appbar, Title} from "react-native-paper";
 import {RouteProp, useNavigation, useRoute} from "@react-navigation/native";
-import useSWR from "swr";
+import useSWR from '@nandorojo/swr-react-native';
 
-import quizzes from "../api/quizzes";
-import classrooms, {ClassroomResponse} from "../api/classrooms"
+import quizzes, {QuizResponse} from "../api/quizzes";
+import {ClassroomResponse} from "../api/classrooms"
 import Error from "../components/Error";
 import colors from "../themes/colors"
 import {AuthContext} from "../context/AuthContext";
@@ -46,18 +46,19 @@ export default function QuizzesScreen() {
         navigation.navigate("CreateQuiz", {classroom})
     }
     const navigateToClasses = () => navigation.navigate("ClassroomsNavigator")
+    const navigateToQuiz = (quiz: QuizResponse) => navigation.navigate("Quiz", {classroom, quiz})
 
     return (
         <View style={{flex: 1}}>
             <Appbar.Header>
                 <Appbar.BackAction onPress={navigateToClasses}/>
                 <Appbar.Content title={classroom.name}/>
-                <Appbar.Action icon={"plus"} onPress={navigateToCreateQuiz}/>
+                {classroom.isAdmin && <Appbar.Action icon={"plus"} onPress={navigateToCreateQuiz}/>}
             </Appbar.Header>
 
             <FlatList style={{flex: 1}} data={data} renderItem={({item, index}) => (
                 <View>
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={() => navigateToQuiz(item)}>
                         <View style={{
                             backgroundColor: colors.headerGreen,
                             padding: 30,

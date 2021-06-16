@@ -1,7 +1,7 @@
 import React from "react";
 import {SafeAreaView, SectionList, Text, View, StyleSheet} from "react-native";
 import {ActivityIndicator, Appbar} from "react-native-paper";
-import useSWR from "swr";
+import useSWR from '@nandorojo/swr-react-native';
 import {getLeaderboard} from "../api/users";
 import {getLeaderboard as getTeamsLeaderboard, TeamResponse} from "../api/teams"
 import Error from "../components/Error";

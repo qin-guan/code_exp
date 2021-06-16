@@ -4,7 +4,7 @@ import {FlatList, SafeAreaView, TouchableOpacity, View} from "react-native";
 import colors from "../themes/colors";
 import shadow from "../themes/shadow";
 import classrooms, {ClassroomResponse} from "../api/classrooms";
-import useSWR from "swr";
+import useSWR from '@nandorojo/swr-react-native';
 import {find, UserResponse} from "../api/users";
 import {useContext} from "react";
 import {AuthContext} from "../context/AuthContext";

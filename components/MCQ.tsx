@@ -19,7 +19,6 @@ export default function MCQ(props: Partial<MCQProps>) {
     } = props
     const colorIndex = ["red", "green", "blue", "yellow"]
 
-
     return (
         <View style={{padding: 15}}>
             {questions.map(({choice, isAnswer}, idx) => (
@@ -30,6 +29,8 @@ export default function MCQ(props: Partial<MCQProps>) {
                             c[idx].choice = text
                             setOptions(c);
                         }, undefined, choice)
+                    } else {
+                        setOptions([])
                     }
                 }}>
                     <View style={{

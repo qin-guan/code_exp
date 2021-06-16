@@ -17,7 +17,7 @@ import {
   Title,
   Avatar,
 } from "react-native-paper";
-import useSWR from "swr";
+import useSWR from '@nandorojo/swr-react-native';
 import colors from "../themes/colors";
 import shadow from "../themes/shadow";
 
