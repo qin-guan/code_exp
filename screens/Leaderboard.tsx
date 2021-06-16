@@ -1,100 +1,73 @@
 import React from "react";
-import { useState } from "react";
-import {
-    View,
-    Text,
-    SectionList,
-    StyleSheet,
-    TouchableOpacity,
-} from "react-native";
-import { MaterialIcons } from "@expo/vector-icons";
-
-const SAMPLE_LEADERBOARD = [
-    {
-        title: "Top Students",
-        data: [
-            {
-                name: "Jackie Chan",
-                class: "2T12",
-                points: "1070",
-            },
-            {
-                name: "Monica Chen",
-                class: "1T22",
-                points: "930",
-            },
-            {
-                name: "Edward Cullen",
-                class: "2T03",
-                points: "880",
-            },
-        ],
-    },
-    {
-        title: "Top Teams",
-        data: [
-            {
-                name: "Galaxy Brain",
-                points: "2010",
-            },
-            {
-                name: "Death Stranding",
-                points: "1770",
-            },
-            {
-                name: "Trade Offer",
-                points: "1610",
-            },
-        ],
-    },
-];
+import {SafeAreaView, SectionList, Text, View, StyleSheet} from "react-native";
+import {ActivityIndicator, Appbar} from "react-native-paper";
+import useSWR from "swr";
+import {getLeaderboard} from "../api/users";
+import {getLeaderboard as getTeamsLeaderboard, TeamResponse} from "../api/teams"
+import Error from "../components/Error";
+import {LeaderboardResponse} from "../api/leaderboard";
 
 export default function LeaderboardScreen() {
-    const [leaderboard, setLeaderboard] = useState(SAMPLE_LEADERBOARD);
+    const {data, error} = useSWR(`Users/Leaderboard`, getLeaderboard)
+    const {data: teamData, error: teamError} = useSWR(`Teams/Leaderboard`, getTeamsLeaderboard)
 
-    function renderSectionHeader({ section }: { section: any }) {
+    if (error || teamError) {
+        return <Error/>
+    }
+
+    if (!data || !teamData) {
+        return (
+            <SafeAreaView>
+                <ActivityIndicator animating/>
+            </SafeAreaView>
+        )
+    }
+
+    function renderSectionHeader({section}: { section: any }) {
         return <Text style={styles.sectionHeader}>{section.title}</Text>;
     }
 
-    function renderItem({ item }: { item: any }) {
-        console.log(item);
+    function renderItem({item}: { item: LeaderboardResponse }) {
         return (
-            <TouchableOpacity style={styles.listItem} onPress={() => {}}>
-                <View style={styles.displayPic}></View>
+            <View style={styles.listItem}>
+                <View style={styles.displayPic}/>
                 <Text style={styles.listItemName}>{item.name}</Text>
                 <Text style={styles.listItemPoints}>{item.points}</Text>
-            </TouchableOpacity>
+            </View>
         );
     }
 
+    const leaderboard = [
+        {
+            title: "Top students",
+            data
+        },
+        {
+            title: "Top teams",
+            data: teamData
+        }
+    ]
+
     return (
         <View style={styles.container}>
-            <View style={styles.headerBox}>
-                <TouchableOpacity>
-                    <MaterialIcons
-                        name="arrow-back"
-                        size={40}
-                        color="black"
-                        style={{ position: "absolute", left: 40, top: 40 }}
-                    />
-                </TouchableOpacity>
+            <Appbar.Header>
+                <Appbar.Content title={"Leaderboard"}/>
+            </Appbar.Header>
 
-                <Text style={styles.headerBoxText}>Leaderboard</Text>
+            <View style={{alignItems: 'center'}}>
+                <SectionList
+                    sections={leaderboard}
+                    renderItem={renderItem}
+                    renderSectionHeader={renderSectionHeader}
+                    style={styles.list}
+                />
             </View>
-            <SectionList
-                sections={leaderboard}
-                renderItem={renderItem}
-                renderSectionHeader={renderSectionHeader}
-                style={styles.list}
-            />
         </View>
     );
 }
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
-        alignItems: "center",
         backgroundColor: "#93C5FD",
     },
     headerBox: {

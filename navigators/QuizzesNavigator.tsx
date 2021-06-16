@@ -3,6 +3,7 @@ import QuizzesScreen from "../screens/Quizzes";
 import ProfileScreen from "../screens/Profile";
 import * as React from "react";
 import {createBottomTabNavigator} from "@react-navigation/bottom-tabs";
+import LeaderboardScreen from "../screens/Leaderboard";
 
 const Tab = createBottomTabNavigator();
 
@@ -32,16 +33,10 @@ export default function QuizzesNavigator() {
             tabBarOptions={{
                 activeTintColor: "#3B82F6",
                 inactiveTintColor: "gray",
-                tabStyle: {
-                    paddingVertical: 10,
-                },
-                style: {
-                    height: "12%",
-                },
             }}
         >
             <Tab.Screen name="My Quizzes" component={QuizzesScreen}/>
-            <Tab.Screen name="Leaderboard" component={ProfileScreen}/>
+            <Tab.Screen name="Leaderboard" component={LeaderboardScreen}/>
         </Tab.Navigator>
     )
 }

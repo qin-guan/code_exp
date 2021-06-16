@@ -1,39 +1,45 @@
-import React from "react";
-import {
-    View,
-    Text,
-    StyleSheet,
-    TouchableOpacity,
-} from "react-native";
-import {Appbar} from "react-native-paper";
+import React, {useState} from "react";
+import {Keyboard, StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback, View,} from "react-native";
+import {Appbar, TextInput} from "react-native-paper";
 import {useNavigation} from "@react-navigation/native";
+import Header from "../components/Header";
 
 export default function CreateQuiz() {
     const navigation = useNavigation()
-    return (
-        <View style={styles.container}>
-            <Appbar.Header>
-                <Appbar.BackAction onPress={navigation.goBack}/>
-                <Appbar.Content title={"Create quiz"}/>
-            </Appbar.Header>
+    const [questions, setQuestions] = useState([])
 
-            <View style={styles.quizRowContainer}>
-                <TouchableOpacity style={styles.quizElementBox}>
-                    <Text>Multiple Choice Question</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.quizElementBox}>
-                    <Text>Short Answer Question</Text>
-                </TouchableOpacity>
+    return (
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+            <View style={styles.container}>
+                {/*<Header backButton title={"Create Quiz"}/>*/}
+
+                <TextInput placeholder={"Quiz name"}/>
+
+                {questions.length === 0 ? (
+                    <>
+                        <View style={styles.quizRowContainer}>
+                            <TouchableOpacity style={styles.quizElementBox}>
+                                <Text>Multiple Choice Question</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={styles.quizElementBox}>
+                                <Text>Short Answer Question</Text>
+                            </TouchableOpacity>
+                        </View>
+                        <View style={styles.quizRowContainer}>
+                            <TouchableOpacity style={styles.quizElementBox}>
+                                <Text>Open-Ended Question</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={styles.quizElementBox}>
+                                <Text>Info Slide</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </>
+                ) : (
+                    <View/>
+                )}
+
             </View>
-            <View style={styles.quizRowContainer}>
-                <TouchableOpacity style={styles.quizElementBox}>
-                    <Text>Open-Ended Question</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.quizElementBox}>
-                    <Text>Info Slide</Text>
-                </TouchableOpacity>
-            </View>
-        </View>
+        </TouchableWithoutFeedback>
     );
 }
 

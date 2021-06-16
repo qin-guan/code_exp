@@ -32,12 +32,6 @@ export default function ClassroomsNavigator() {
             tabBarOptions={{
                 activeTintColor: "#3B82F6",
                 inactiveTintColor: "gray",
-                tabStyle: {
-                    paddingVertical: 10,
-                },
-                style: {
-                    height: "12%",
-                },
             }}
         >
             <Tab.Screen name="My Classes" component={MyClasses}/>
