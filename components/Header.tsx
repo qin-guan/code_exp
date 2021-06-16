@@ -1,6 +1,6 @@
 import colors from "../themes/colors";
 import React from "react";
-import {SafeAreaView, TextInput, TouchableOpacity, View} from "react-native";
+import {Alert, SafeAreaView, TextInput, TouchableOpacity, View} from "react-native";
 import {Appbar, Title} from "react-native-paper";
 import {useNavigation} from "@react-navigation/native";
 import {MaterialIcons} from "@expo/vector-icons";
@@ -12,16 +12,32 @@ export interface HeaderProps {
     value: string;
     placeholder: string,
     questionNumber: number,
+    points: number,
 
     onChangeText: (text: string) => void,
     onLeft: () => void,
     onRight: () => void,
     onNewQuestion: () => void,
     onCreate: () => void,
+    onChangePoints: (points: number) => void
 }
 
 export default function Header(props: Partial<HeaderProps>) {
-    const {title, backButton, textInput, onChangeText, value, placeholder, questionNumber, onLeft, onRight, onNewQuestion, onCreate} = props
+    const {
+        points,
+        title,
+        backButton,
+        textInput,
+        onChangeText,
+        value,
+        placeholder,
+        questionNumber,
+        onLeft,
+        onRight,
+        onNewQuestion,
+        onChangePoints,
+        onCreate
+    } = props
 
     const navigation = useNavigation()
 
@@ -34,13 +50,19 @@ export default function Header(props: Partial<HeaderProps>) {
                                        onPress={() => navigation.goBack()}/>}
                     <Title>{title}</Title>
                     {onCreate && (
-                        <TouchableOpacity onPress={onCreate} style={{position: "absolute", alignSelf: "flex-end", right: 15}}>
+                        <TouchableOpacity onPress={onCreate}
+                                          style={{position: "absolute", alignSelf: "flex-end", right: 15}}>
                             <MaterialIcons name={"done"} style={{fontSize: 30}}/>
                         </TouchableOpacity>
                     )}
                 </View>
                 {questionNumber !== undefined && (
-                    <View style={{flexDirection: "row", marginHorizontal: 15, alignItems: "center", justifyContent: "space-between"}}>
+                    <View style={{
+                        flexDirection: "row",
+                        marginHorizontal: 15,
+                        alignItems: "center",
+                        justifyContent: "space-between"
+                    }}>
                         <View style={{flexDirection: "row", alignItems: "center"}}>
                             {onLeft && (
                                 <TouchableOpacity disabled={questionNumber === 0} onPress={onLeft}>
@@ -63,6 +85,17 @@ export default function Header(props: Partial<HeaderProps>) {
                             </TouchableOpacity>
                         )}
                     </View>
+                )}
+                {points && (
+                    <TouchableOpacity onPress={() => {
+                        if (onChangePoints) {
+                            Alert.prompt("Edit points", undefined, (text) => {
+                                if (text) onChangePoints(parseInt(text) ?? 10)
+                            })
+                        }
+                    }}>
+                        <Title style={{marginLeft: 15, marginTop: 15}}>{points} points</Title>
+                    </TouchableOpacity>
                 )}
                 {textInput && (
                     <View style={{backgroundColor: colors.inputBlue, margin: 20, borderRadius: 15}}>

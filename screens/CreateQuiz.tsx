@@ -68,6 +68,7 @@ export default function CreateQuiz() {
         setQuestions(q => [...q, {
             questionType,
             title: "",
+            points: 10,
             mcqQuestionChoices: [
                 {
                     "choice": "choice 1",
@@ -110,7 +111,8 @@ export default function CreateQuiz() {
                     "isAnswer": false
                 },
             ],
-            title: ""
+            title: "",
+            points: 10,
         }])
         setCurrentQuestion(questions.length - 1)
     }
@@ -130,6 +132,7 @@ export default function CreateQuiz() {
                 <View style={styles.container}>
                     <Header
                         textInput
+                        points={questions.length === 0 ? undefined : questions[currentQuestion].points}
                         backButton={questions.length === 0}
                         questionNumber={questions.length === 0 ? undefined : currentQuestion}
                         placeholder={questions.length === 0 ? "Enter Quiz Name" : "Insert your question here"}
@@ -146,6 +149,11 @@ export default function CreateQuiz() {
                         }}
                         onNewQuestion={newQuestion}
                         onCreate={questions.length !== 0 ? createQuestions : undefined}
+                        onChangePoints={points => {
+                            const clone = [...questions]
+                            clone[currentQuestion].points = points;
+                            setQuestions(clone)
+                        }}
                     />
 
                     {questions.length === 0 ? (
