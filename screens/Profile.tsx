@@ -12,7 +12,7 @@ import Error from "../components/Error";
 import {TeamResponse, teams} from "../api/teams";
 
 export default function ProfileScreen() {
-    const {id} = useContext(AuthContext);
+    const {id, setId} = useContext(AuthContext);
 
     const {join, create, find: findTeam} = teams(id ?? "");
     const [code, setCode] = useState("");
@@ -147,6 +147,8 @@ export default function ProfileScreen() {
                         </View>
                     )}
                 </View>
+
+                <Button onPress={() => setId("")}>Logout</Button>
             </SafeAreaView>
         </TouchableWithoutFeedback>
     );
