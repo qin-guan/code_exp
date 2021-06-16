@@ -30,7 +30,7 @@ export default function ProfileScreen() {
         return <Error/>;
     }
 
-    if (!data || !team) {
+    if (!data) {
         return (
             <SafeAreaView>
                 <ActivityIndicator animating/>
@@ -88,23 +88,8 @@ export default function ProfileScreen() {
                         </View>
                     </View>
 
-                    <View style={styles.leaderboard}>
-                        <Title>My Teams</Title>
-                        <View
-                            style={{
-                                flexDirection: "row",
-                                justifyContent: "space-between",
-                                marginTop: 10,
-                            }}
-                        >
-                            <Text style={{fontSize: 18}}>{team?.name}</Text>
-                            <Text style={{fontSize: 18, paddingRight: 6}}>
-                                {team.points}
-                            </Text>
-                        </View>
-                    </View>
 
-                    {!data.teamId && (visible ? (
+                    {!data.teamId ? (visible ? (
                         <>
                             <TextInput
                                 value={code}
@@ -144,7 +129,23 @@ export default function ProfileScreen() {
                             </Button>
 
                         </>
-                    ))}
+                    )) : (
+                        <View style={styles.leaderboard}>
+                            <Title>My Teams</Title>
+                            <View
+                                style={{
+                                    flexDirection: "row",
+                                    justifyContent: "space-between",
+                                    marginTop: 10,
+                                }}
+                            >
+                                <Text style={{fontSize: 18}}>{team?.name}</Text>
+                                <Text style={{fontSize: 18, paddingRight: 6}}>
+                                    {team?.points}
+                                </Text>
+                            </View>
+                        </View>
+                    )}
                 </View>
             </SafeAreaView>
         </TouchableWithoutFeedback>
