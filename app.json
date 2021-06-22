@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "code_exp",
-    "slug": "code_exp",
+    "name": "Tahook",
+    "slug": "Tahook",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -20,6 +20,8 @@
       "supportsTablet": true
     },
     "android": {
+      "package": "com.tahook",
+      "versionCode": 1,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
